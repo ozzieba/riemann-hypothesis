@@ -213,17 +213,137 @@ DECL_RE = re.compile(
     r"(?:def|theorem|lemma|abbrev|instance|structure|class|inductive|opaque|axiom|irreducible_def)"
     r"\s+([^\s:({\[]+)")
 
+CHAR_LITERAL_RE = re.compile(r"'(?:[^'\\\n]|\\(?:u[0-9a-fA-F]{4}|x[0-9a-fA-F]{2}|[^\n]))'")
+RAW_STRING_RE = re.compile(r'r(#+)?"')
+INTERPOLATED_PREFIXES = {"s!", "m!", "f!", "println!", "dbg_trace", "throwError"}
+
+
+def scan_code(body):
+    """Mask comments and literals for the approximate command scan, preserving columns.
+
+    Keep quoted identifiers intact: they can contain comment delimiters, but their
+    contents are still part of a declaration's name. Recognise the standard immediate
+    interpolation prefixes; this remains an approximation, not a parser for custom
+    Lean syntax. Interpolation expressions cannot contain module-level commands.
+    """
+    out = list(body)
+    n, i, depth = len(body), 0, 0
+    # Literal frames are (closing delimiter, interpolated, escapes); expression frames are
+    # integers counting braces inside an interpolated string.
+    frames = []
+    last_token = None
+
+    def mask(a, b):
+        for j in range(a, b):
+            if out[j] != "\n":
+                out[j] = " "
+
+    def id_char(c):
+        return c.isalnum() or c in "_.'!?"
+
+    while i < n:
+        if depth:
+            if body.startswith("/-", i):
+                depth += 1
+                end = i + 2
+            elif body.startswith("-/", i):
+                depth -= 1
+                end = i + 2
+            else:
+                end = i + 1
+            mask(i, end)
+            i = end
+            continue
+        if frames and isinstance(frames[-1], tuple):
+            delim, interp, escapes = frames[-1]
+            if body.startswith(delim, i):
+                end = i + len(delim)
+                frames.pop()
+                last_token = None
+            elif escapes and body[i] == "\\":
+                end = min(i + 2, n)
+            elif interp and body[i] == "{":
+                frames.append(1)
+                last_token = None
+                end = i + 1
+            else:
+                end = i + 1
+            mask(i, end)
+            i = end
+            continue
+        if body.startswith("--", i):
+            end = body.find("\n", i)
+            end = n if end < 0 else end
+            mask(i, end)
+            i = end
+            continue
+        if body.startswith("/-", i):
+            depth = 1
+            mask(i, i + 2)
+            i += 2
+            continue
+        if body[i] == "«":
+            end = body.find("»", i + 1)
+            end = n if end < 0 else end + 1
+            if frames:
+                mask(i, end)
+            last_token = body[i:end]
+            i = end
+            continue
+        # Do not mistake an identifier's prime for a character-literal opener.
+        if body[i] == "'" and (i == 0 or not id_char(body[i - 1])):
+            m = CHAR_LITERAL_RE.match(body, i)
+            if m:
+                end = m.end()
+                mask(i, end)
+                last_token = None
+                i = end
+                continue
+        if body[i] == "r" and (i == 0 or not id_char(body[i - 1])):
+            m = RAW_STRING_RE.match(body, i)
+            if m:
+                frames.append(('"' + (m.group(1) or ""), False, False))
+                end = m.end()
+                mask(i, end)
+                last_token = None
+                i = end
+                continue
+        if id_char(body[i]):
+            end = i + 1
+            while end < n and id_char(body[end]):
+                end += 1
+            last_token = body[i:end]
+            if frames:
+                mask(i, end)
+            i = end
+            continue
+        if body[i] == '"':
+            frames.append(('"', last_token in INTERPOLATED_PREFIXES, True))
+            last_token = None
+            mask(i, i + 1)
+        elif frames:
+            if body[i] == "{":
+                frames[-1] += 1
+            elif body[i] == "}":
+                frames[-1] -= 1
+                if frames[-1] == 0:
+                    frames.pop()
+            mask(i, i + 1)
+        if not body[i].isspace():
+            last_token = None
+        i += 1
+    return "".join(out)
+
 
 def scan(body):
     """Return (scopes left open at the end of `body`, set of full names declared at top level).
 
-    Line-based and approximate: commands are recognised only at column 0, outside block comments.
+    Line-based and approximate: commands are recognised only at column 0, outside comments/literals.
     """
     stack = []
     decls = set()
-    depth = 0  # block comment nesting
-    for l in body.split("\n"):
-        if depth == 0 and not l.startswith(("/-", " ", "\t")) and l:
+    for l in scan_code(body).split("\n"):
+        if not l.startswith((" ", "\t")) and l:
             m = SECTION_RE.match(l)
             if m:
                 stack.append(("section", m.group(1)))
@@ -246,9 +366,6 @@ def scan(body):
                             else:
                                 ns = ".".join(n for k, n in stack if k == "namespace")
                                 decls.add(ns + "." + name if ns else name)
-        # crude block-comment tracking (ignores comment markers inside strings)
-        depth += l.count("/-") - l.count("-/")
-        depth = max(depth, 0)
     return stack, decls
 
 
