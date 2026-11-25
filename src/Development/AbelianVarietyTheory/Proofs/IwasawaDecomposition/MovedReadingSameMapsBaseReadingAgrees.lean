@@ -66,18 +66,6 @@ variable {D : D7} (N : ∀ u, Submodule (𝓞 D.what₂.LL) (D.div.Nu u).V) (h :
 abbrev JAT (A : FamIn D.what₂.LL G Pl0 T D.R.m) (X : RowSide D EE) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (t : T) (μ : D.what₂.Tup) :
     Type := (Fin (rDim D A P ψ t) → D.what₂.LL) →ₛₗ[D.what₂.embLL] X.Amb μ
 
-def AmbW (A : FamIn D.what₂.LL G Pl0 T D.R.m) (X : RowSide D EE) (a : AmbForm D X) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ)
-    (tup : T → D.what₂.Tup) (jA : ∀ t, (Fin (rDim D A P ψ t) → D.what₂.LL) →ₛₗ[D.what₂.embLL] X.Amb (tup t)) : Prop :=
-  ∃ J, AmbTie D A X a P ψ tup jA J
-
-theorem AmbW.congr {a : AmbForm D X} {P : Subgroup G} {ψ : P →* D.what₂.LLˣ} {tup : T → D.what₂.Tup}
-    {jA : ∀ t, (Fin (rDim D A P ψ t) → D.what₂.LL) →ₛₗ[D.what₂.embLL] X.Amb (tup t)} (H : AmbW A X a P ψ tup jA)
-    (tup' : T → D.what₂.Tup) (e : tup' = tup)
-    (jA' : ∀ t, (Fin (rDim D A P ψ t) → D.what₂.LL) →ₛₗ[D.what₂.embLL] X.Amb (tup' t)) (ej : HEq jA' jA) : AmbW A X a P ψ tup' jA' := by
-  subst e
-  obtain rfl := eq_of_heq ej
-  exact H
-
 theorem sameOn_congr {K τ ι : Type} {n : τ → ℕ} {m : ι → ℕ} {V : τ → Type} (j : ∀ μ, (Fin (n μ) → K) → V μ) {tup tup' : ι → τ}
     (e : tup' = tup) {k : ∀ s, (Fin (m s) → K) → V (tup s)} {k' : ∀ s, (Fin (m s) → K) → V (tup' s)} (ek : HEq k' k)
     (H : ∀ s, SameOn (j (tup s)) (k s)) (s : ι) : SameOn (j (tup' s)) (k' s) := by
@@ -285,39 +273,6 @@ theorem ReadSame.pk (s : ReadSame N h t Y L) : HEq (SRe.pkOf s.what₂) ((SRe.pk
 
 
 
-theorem ReadSame.amb1 (s : ReadSame N h t Y L) {a : AmbForm (w.D Z) (RowSide.sharp (w.D Z))}
-    (a' : AmbForm (w.D (Db.setDivZ Z N h)) (RowSide.sharp (w.D (Db.setDivZ Z N h)))) (e1 : a'.MtH = (a.MtH))
-    (e2 : HEq a'.jAmb a.jAmb)
-    (H : AmbW (D := (w.st Z).toD7) (famR (w.st Z) w.I t.hX (usedOf w.I T Wt) t.r.z.Xg t.r.z.tr).A _ a t.r.z.F.P1 t.r.z.F.ψ1
-      t.r.Y.tup t.r.Y.jA) :
-    AmbW (D := (w.st (Db.setDivZ Z N h)).toD7) (famR (w.st (Db.setDivZ Z N h)) w.I t.hX (usedOf w.I T Wt) t.r.z.Xg t.r.z.tr).A _ a'
-      ((by exact t.r.z.F.P1)) ((by exact t.r.z.F.ψ1)) ((by exact Y.tup)) ((by exact Y.jA)) := by
-  obtain ⟨M, j, a1, a2, a3, a4, a5⟩ := a'
-  dsimp only at e1 e2
-  subst e1
-  have e : ((by with_unfolding_all exact (a.jAmb :))) = j := eq_of_heq ((by with_unfolding_all exact (e2.symm :)))
-  subst e
-  obtain ⟨J, HJ⟩ := AmbW.congr H ((by with_unfolding_all exact (Y.tup :))) ((by with_unfolding_all exact (s.tup_eq :))) ((by with_unfolding_all exact (Y.jA :))) ((by with_unfolding_all exact (s.jA :)))
-  exact ⟨⟨(by with_unfolding_all exact (J.eA :))⟩, ⟨(by with_unfolding_all exact (HJ.j_eq :)), (by with_unfolding_all exact (HJ.lat :)), (by with_unfolding_all exact (HJ.metric :))⟩⟩
-
-
-
-theorem ReadSame.amb0 (s : ReadSame N h t Y L) {a : AmbForm (w.D Z) p0.s}
-    (a' : AmbForm (w.D (Db.setDivZ Z N h)) (p0Mv N h p0).s) (e1 : a'.MtH = (a.MtH))
-    (e2 : HEq a'.jAmb a.jAmb)
-    (H : AmbW (D := (w.st Z).toD7) (famR (w.st Z) w.I t.hX (usedOf w.I T Wt) t.r.z.Xg t.r.z.tr).A _ a t.r.z.F.P0 t.r.z.F.ψ0
-      t.r.Y.tup t.r.Y.jA0) :
-    AmbW (D := (w.st (Db.setDivZ Z N h)).toD7) (famR (w.st (Db.setDivZ Z N h)) w.I t.hX (usedOf w.I T Wt) t.r.z.Xg t.r.z.tr).A _ a'
-      ((by exact t.r.z.F.P0)) ((by exact t.r.z.F.ψ0)) ((by exact Y.tup)) ((by exact Y.jA0)) := by
-  obtain ⟨M, j, a1, a2, a3, a4, a5⟩ := a'
-  dsimp only at e1 e2
-  subst e1
-  have e : ((by with_unfolding_all exact (a.jAmb :))) = j := eq_of_heq ((by with_unfolding_all exact (e2.symm :)))
-  subst e
-  obtain ⟨J, HJ⟩ := AmbW.congr H ((by with_unfolding_all exact (Y.tup :))) ((by with_unfolding_all exact (s.tup_eq :))) ((by with_unfolding_all exact (Y.jA0 :))) ((by with_unfolding_all exact (s.jA0 :)))
-  exact ⟨⟨(by with_unfolding_all exact (J.eA :))⟩, ⟨(by with_unfolding_all exact (HJ.j_eq :)), (by with_unfolding_all exact (HJ.lat :)), (by with_unfolding_all exact (HJ.metric :))⟩⟩
-
-
 variable (N h t) in
 
 def allMv (x : RXs t) :
@@ -405,10 +360,6 @@ theorem ReadSame.objT {N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V} {h : B
     {L : ReadL (datMv N h t.r.z).R (datMv N h t.r.z).F ((p0Mv N h O.p0)) Y} (s : ReadSame N h t Y L) (H : ObjT O t) :
     ObjT (objMv N h O) s.what₂ := by
   exact {
-    amb := by
-      with_unfolding_all
-        exact ⟨s.amb1 (a := O.amb) (objMv N h O).amb rfl (HEq.refl O.amb.jAmb) H.amb.1,
-          s.amb0 (a := O.amb0) (objMv N h O).amb0 rfl (HEq.refl O.amb0.jAmb) H.amb.2⟩
     mjH := s.mj_fwd (X := O.X) H.mjH
     kapR σ := (H.kapR σ).trans (kapSharp_mv (w := w) (Z := Z) N h).symm
   }

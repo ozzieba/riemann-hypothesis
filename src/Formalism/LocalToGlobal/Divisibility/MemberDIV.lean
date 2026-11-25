@@ -121,16 +121,15 @@ structure ExtendedDataRemainder {G Pl0 I0 Tt : Type} [Group G] [Fintype G] (ex :
   C : ColData (Dcf Zs) (Spf Zs) S1
   NuC : ∀ u, Submodule (𝓞 D.what₂.LL) (Fin ((Dcf Zs).a u) → D.what₂.LL)
   I : DivisionCompatibilityDataThreeSided D A3 P0 ψ0 P1 ψ1 Zs S0 S1 ex.p0 (Dcf Zs)
-  JA : AmbIds D A3.A ex.p0.s ex.amb0 P0 ψ0 I.tup
   JM : MjHIds D A3.A Y (A3.indefDown S0)
-  tied : BaseDivisionAmbientCompatibilityFamily D A3 Y ex.p0 ex.amb0 P0 ψ0 P1 ψ1 Zs S0 S1 C NuC I JA JM
+  tied : BaseDivisionAmbientCompatibilityFamily D A3 Y ex.p0 P0 ψ0 P1 ψ1 Zs S0 S1 C NuC I JM
 
 variable {G Pl0 I0 Tt : Type} [Group G] [Fintype G] {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) Tt D.R.m} {P0 : Subgroup G}
   {ψ0 : P0 →* D.what₂.LLˣ} {P1 : Subgroup G} {ψ1 : P1 →* D.what₂.LLˣ} {Dcf : ∀ Zs : DefSub A3.fam3.amb3, DefCols (A3.side3 P1 ψ1 Zs)}
   {Spf : ∀ Zs : DefSub A3.fam3.amb3, SPer (Dcf Zs)}
 
 def ExtendedDataRemainder.extendedDatum (R : ExtendedDataRemainder ex A3 P0 ψ0 P1 ψ1 Dcf Spf) : RowSideFamily ex :=
-  ⟨G, Pl0, I0, Tt, A3, P0, ψ0, P1, ψ1, R.Zs, R.S0, R.S1, Dcf R.Zs, Spf R.Zs, R.C, R.NuC, R.I, R.JA, R.JM, R.tied⟩
+  ⟨G, Pl0, I0, Tt, A3, P0, ψ0, P1, ψ1, R.Zs, R.S0, R.S1, Dcf R.Zs, Spf R.Zs, R.C, R.NuC, R.I, R.JM, R.tied⟩
 
 end IndefiniteRowSideFullHecke
 

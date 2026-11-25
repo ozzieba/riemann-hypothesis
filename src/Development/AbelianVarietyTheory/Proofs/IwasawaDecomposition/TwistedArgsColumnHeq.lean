@@ -48,7 +48,7 @@ theorem twArgs_lev : ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w 
   cases a with
   | mk Dc Sp Zsc lam err lam_eq x pack intersectionNumber_baseChange hκ hv hfw htup htupT hjA hjA0 heMt hPY hPW heFT hIL heE heW hjW heRR =>
   cases x with
-  | mk G Pl0 I0 T' A3 core R F cG geo pins err' Y Z' C' sEE div JA amb0 JM mjH =>
+  | mk G Pl0 I0 T' A3 core R F cG geo pins err' Y Z' C' sEE div JM mjH =>
   cases pack
   have hT' : Y.tupT = t.r.Y.tupT := eq_of_heq htupT
   refine ⟨?_, ?_, ?_, ?_⟩

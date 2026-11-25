@@ -43,31 +43,6 @@ def PosAt {n : ℕ} (H : Matrix (Fin n) (Fin n) K) (v : InfinitePlace K) : Prop 
 
 end Place
 
-section Amb
-
-variable (D : D7) {Gp : Type} [Group Gp] [Fintype Gp] {Pl0 T : Type} {m : ℕ}
-  (A : FamIn D.what₂.LL Gp Pl0 T m)
-
-structure AmbIds {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE]
-    (X : RowSide D EE) (Fm : AmbForm D X) (P : Subgroup Gp) (ψ : P →* D.what₂.LLˣ) (tup : T → D.what₂.Tup) where
-
-  eA : ∀ t, DV.Used D (tup t) → (Fin (rDim D A P ψ t) → D.what₂.LL) ≃ₗ[D.what₂.LL] (Fm.MtH (tup t)).V
-
-structure AmbTie {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE]
-    (X : RowSide D EE) (Fm : AmbForm D X) (P : Subgroup Gp) (ψ : P →* D.what₂.LLˣ) (tup : T → D.what₂.Tup)
-    (jA : ∀ t, (Fin (rDim D A P ψ t) → D.what₂.LL) →ₛₗ[D.what₂.embLL] X.Amb (tup t))
-    (J : AmbIds D A X Fm P ψ tup) : Prop where
-
-  j_eq : ∀ t (h : DV.Used D (tup t)) x, Fm.jAmb (tup t) (J.eA t h x) = jA t x
-
-  lat : ∀ t (h : DV.Used D (tup t)),
-    (Fm.MtH (tup t)).L = (rNab D A P ψ t).map (((J.eA t h).toLinearMap).restrictScalars (𝓞 D.what₂.LL))
-
-  metric : ∀ t (h : DV.Used D (tup t)) (v : InfinitePlace D.what₂.LL), PosAt (rH D A P ψ t) v → ∀ x y,
-    Formalism.HermitianLatticesTheory.majAt (Fm.MtH (tup t)).b (Fm.MtH (tup t)).X v (J.eA t h x) (J.eA t h y) = hAt (rH D A P ψ t) v x y
-
-end Amb
-
 section MjH
 
 variable (D : D7) {Gp : Type} [Group Gp] [Fintype Gp] {Pl0 T : Type} {m : ℕ}
@@ -92,34 +67,21 @@ section Joint
 variable (D : D7) {Gp : Type} [Group Gp] [Fintype Gp] {Pl0 T : Type}
   (A : FamIn D.what₂.LL Gp Pl0 T D.R.m)
 
-structure BaseDivisionAmbientCompatibility (Y : DivX D) (p0 : BaseLevelRowSide D) (a0 : AmbForm D p0.s)
+structure BaseDivisionAmbientCompatibility (Y : DivX D) (p0 : BaseLevelRowSide D)
     (P0 : Subgroup Gp) (ψ0 : P0 →* D.what₂.LLˣ) (Ps : Subgroup Gp) (ψs : Ps →* D.what₂.LLˣ)
     (Zs : DefSub A.fam.amb) (S0 : IndefData (A.side P0 ψ0 Zs)) (S1 : IndefData (A.side Ps ψs Zs))
     {Dc : DefCols (A.side Ps ψs Zs)} {Sp : SPer Dc} (C : ColData Dc Sp S1)
     (NuC : ∀ u, Submodule (𝓞 D.what₂.LL) (Fin (Dc.a u) → D.what₂.LL))
     (I : DivisionCompatibilityData D A P0 ψ0 Ps ψs Zs S0 S1 p0 Dc)
-    (JA : AmbIds D A p0.s a0 P0 ψ0 I.tup) (JM : MjHIds D A Y S0) : Prop where
+    (JM : MjHIds D A Y S0) : Prop where
 
   div : DivisionCompatible D A P0 ψ0 Ps ψs Zs S0 S1 p0 C NuC I
-
-  amb0 : AmbTie D A p0.s a0 P0 ψ0 I.tup I.jA0 JA
 
   mjH : MjHTie D A Y S0 I.jW JM
 
   cen0 : CenTie D A p0.s P0 ψ0 I.eG I.tup I.jA0
 
 end Joint
-
-section Consistency
-
-variable {D : D7} {Gp : Type} [Group Gp] [Fintype Gp] {Pl0 T : Type} {A : FamIn D.what₂.LL Gp Pl0 T D.R.m}
-  {Y : DivX D} {p0 : BaseLevelRowSide D} {a0 : AmbForm D p0.s} {P0 : Subgroup Gp} {ψ0 : P0 →* D.what₂.LLˣ} {Ps : Subgroup Gp}
-  {ψs : Ps →* D.what₂.LLˣ} {Zs : DefSub A.fam.amb} {S0 : IndefData (A.side P0 ψ0 Zs)} {S1 : IndefData (A.side Ps ψs Zs)}
-  {Dc : DefCols (A.side Ps ψs Zs)} {Sp : SPer Dc} {C : ColData Dc Sp S1}
-  {NuC : ∀ u, Submodule (𝓞 D.what₂.LL) (Fin (Dc.a u) → D.what₂.LL)} {I : DivisionCompatibilityData D A P0 ψ0 Ps ψs Zs S0 S1 p0 Dc}
-  {JA : AmbIds D A p0.s a0 P0 ψ0 I.tup} {JM : MjHIds D A Y S0}
-
-end Consistency
 
 section Bundle
 
@@ -154,11 +116,9 @@ structure FiniteGroupFamilyCharacterData (ex : Extra D L hT Gi Gl Kc Y cX) : Typ
 
   I : DivisionCompatibilityData D A P0 ψ0 Ps ψs Zs S0 S1 ex.p0 Dc
 
-  JA : AmbIds D A ex.p0.s ex.amb0 P0 ψ0 I.tup
-
   JM : MjHIds D A Y S0
 
-  tied : BaseDivisionAmbientCompatibility D A Y ex.p0 ex.amb0 P0 ψ0 Ps ψs Zs S0 S1 C NuC I JA JM
+  tied : BaseDivisionAmbientCompatibility D A Y ex.p0 P0 ψ0 Ps ψs Zs S0 S1 C NuC I JM
 
 attribute [instance] FiniteGroupFamilyCharacterData.grp FiniteGroupFamilyCharacterData.fin
 

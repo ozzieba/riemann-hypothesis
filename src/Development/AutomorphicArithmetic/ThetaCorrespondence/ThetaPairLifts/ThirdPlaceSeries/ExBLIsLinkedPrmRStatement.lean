@@ -964,7 +964,7 @@ private theorem logLam_twArgs_pz : GlobalTheory.Published.WeilRepresentationUnit
   cases a with
   | mk Dc Sp Zsc lam err lam_eq x pack intersectionNumber_baseChange hκ hv hfw htup htupT hjA hjA0 heMt hPY hPW heFT hIL heE heW hjW heRR =>
   cases x with
-  | mk G Pl0 I0 T' A3 core R F cG geo pins err' Y Z' C' sEE div JA amb0 JM mjH =>
+  | mk G Pl0 I0 T' A3 core R F cG geo pins err' Y Z' C' sEE div JM mjH =>
   cases pack
   intro i π c e he hne hle
   have hW : Y.mj.eW = t.r.Y.mj.eW := by set_option maxHeartbeats 100000 in exact eq_of_heq heW
@@ -1120,16 +1120,6 @@ open GlobalTheory.Mem.R3
 
 namespace GlobalTheory.Mem.R3.SelRowPin
 
-theorem amb_of_eq {D : D7} {Gp : Type} [Group Gp] [Fintype Gp] {Pl0 T : Type} {m : ℕ} {A : FamIn D.what₂.LL Gp Pl0 T m}
-    {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE]
-    {X : RowSide D EE} {Fm Fm' : AmbForm D X} {P : Subgroup Gp} {ψ : P →* D.what₂.LLˣ} {tup tup' : T → D.what₂.Tup}
-    {jA : ∀ t, (Fin (rDim D A P ψ t) → D.what₂.LL) →ₛₗ[D.what₂.embLL] X.Amb (tup t)}
-    {jA' : ∀ t, (Fin (rDim D A P ψ t) → D.what₂.LL) →ₛₗ[D.what₂.embLL] X.Amb (tup' t)}
-    (hF : Fm = Fm') (h : tup = tup') (hj : HEq jA jA') :
-    (∃ J, AmbTie D A X Fm' P ψ tup' jA' J) → ∃ J, AmbTie D A X Fm P ψ tup jA J := by
-  subst hF; subst h; cases hj; exact id
-
-
 end GlobalTheory.Mem.R3.SelRowPin
 end -- clump:auto
 end -- clump:auto
@@ -1230,13 +1220,12 @@ open Formalism.BasicNotions Formalism.MainNotions NumberField IsDedekindDomain
 open Formalism.L2 Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Cx Formalism.IndefR.Lev
 open GlobalTheory.Mem GlobalTheory.Mem.R3
 namespace GlobalTheory.Mem.R3
-theorem lower_map_sharp_ambient_tie_alt : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (K : Formalism.MainNotions.G.Consts) (Yd : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Yd cX) (x : TwIn ex) (T : _root_.Formalism.L2.TiedDataSKAlt ex), (∀ u, LowerMapTieS (T.cols.forms u)) → (∀ u μ (hμ : μ ≠ D.what₂.mu0) (_ : ∃ w, μ = D.what₂.muAt w) (h1 : 1 ≤ D.R.m), _root_.Formalism.L2.Rows.LowerMapTieTwAlt T u μ hμ h1) → (∃ J, AmbTie D x.A3.A (RowSide.sharp D) ex.amb x.F.P1 x.F.ψ1 x.Y.tup x.Y.jA J) → ((∀ (t : x.T) (c : (x.A3.A.fam.R t).S.Cl), Fintype.card ((x.A3.A.fam.R t).S.Gam c) ∣ (D.mem D.u₀).C.DGam) ∧ ∀ (j : Fin D.R.m) (t : x.T) (c : (x.A3.A.fam.L j t).S.Cl), Fintype.card ((x.A3.A.fam.L j t).S.Gam c) ∣ (D.mem D.u₀).C.DGam) → _root_.Formalism.L2.Rows.RowSideDeterminedAlt T (divisionPairOfAdelicFormsFaceColumnsData x) := by
-  intro D L hT Gi Gl K Yd cX ex x T hL hLt hA hG
+theorem lower_map_sharp_ambient_tie_alt : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (K : Formalism.MainNotions.G.Consts) (Yd : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Yd cX) (x : TwIn ex) (T : _root_.Formalism.L2.TiedDataSKAlt ex), (∀ u, LowerMapTieS (T.cols.forms u)) → (∀ u μ (hμ : μ ≠ D.what₂.mu0) (_ : ∃ w, μ = D.what₂.muAt w) (h1 : 1 ≤ D.R.m), _root_.Formalism.L2.Rows.LowerMapTieTwAlt T u μ hμ h1) → ((∀ (t : x.T) (c : (x.A3.A.fam.R t).S.Cl), Fintype.card ((x.A3.A.fam.R t).S.Gam c) ∣ (D.mem D.u₀).C.DGam) ∧ ∀ (j : Fin D.R.m) (t : x.T) (c : (x.A3.A.fam.L j t).S.Cl), Fintype.card ((x.A3.A.fam.L j t).S.Gam c) ∣ (D.mem D.u₀).C.DGam) → _root_.Formalism.L2.Rows.RowSideDeterminedAlt T (divisionPairOfAdelicFormsFaceColumnsData x) := by
+  intro D L hT Gi Gl K Yd cX ex x T hL hLt hG
   exact
     { lowerMap := hL
       lowerMapTw := hLt
       buDef := x.Y.bu
-      ambS := hA
       faces := ⟨x.F.Dc, x.F.Sp, rfl, HEq.rfl⟩
       gamDvd := hG }
 end GlobalTheory.Mem.R3
@@ -1270,18 +1259,7 @@ theorem selected_lower_map_third_stage_alt : GlobalTheory.Published.DiscreteSeri
   · cases a with
     | mk Dc Sp Zsc lam err lam_eq x pack intersectionNumber_baseChange hκ hv hfw htup htupT hjA hjA0 heMt hPY hPW heFT hIL heE heW hjW heRR =>
     cases x with
-    | mk G Pl0 I0 T' A3 core R' F cG geo pins err' Y Z' C' sEE div JA amb0 JM mjH =>
-    cases pack
-    let D := q.w.D q.Z
-    let t := q.x.what₂
-    exact amb_of_eq (D := D) (A := (famT t).A) (X := RowSide.sharp D)
-      (Fm := q.O.ex.amb) (Fm' := q.O.ex.amb) (P := t.r.z.F.P1) (ψ := t.r.z.F.ψ1)
-      (tup := Y.tup) (tup' := t.r.Y.tup) (jA := Y.jA) (jA' := t.r.Y.jA)
-      rfl (eq_of_heq htup) hjA q.x.obj.amb.1
-  · cases a with
-    | mk Dc Sp Zsc lam err lam_eq x pack intersectionNumber_baseChange hκ hv hfw htup htupT hjA hjA0 heMt hPY hPW heFT hIL heE heW hjW heRR =>
-    cases x with
-    | mk G Pl0 I0 T' A3 core R' F cG geo pins err' Y Z' C' sEE div JA amb0 JM mjH =>
+    | mk G Pl0 I0 T' A3 core R' F cG geo pins err' Y Z' C' sEE div JM mjH =>
     cases pack
     exact GlobalTheory.Mem.R3.GamDvd.gamDvd q.w.I q.x.what₂.hX _ _ _ q.w.l q.Z
 end GlobalTheory.Mem.R3.SelRowPin
