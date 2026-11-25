@@ -854,7 +854,7 @@ theorem exists_ringSpec (hA : GlobalTheory.Published.GlobalArtinReciprocity) : �
     rw [card_padicComplex, Cardinal.mk_complex]; exact Cardinal.aleph0_lt_continuum
   choose ι' hι' using fun w => _root_.GlobalTheory.AlgClosedIsoOverNumberField.exists_ringEquiv_comp_eq ↥D.LL0 ℂ_[lw w] ℂ
     ((algebraMap (PadicAlgCl (lw w)) ℂ_[lw w]).comp (j0 w)) (embLL0 D) (card_padicComplex (lw w)) (hcardC w)
-  let toHC : HChar D.host.E → Formalism.L2.NC.HC D.host.E := fun χ => ⟨χ.1, χ.2.1, χ.2.2⟩
+  let toHC : HChar D.host.E → Formalism.L2.NC.HC D.host.E := fun χ => ⟨χ.1⟩
   let mu0H : ℕ → Formalism.L2.NC.HC D.host.E := fun n =>
     if h : 1 ≤ n ∧ n ≤ D.R.m then toHC (cf.mu0 ⟨n - 1, by omega⟩) else 1
   have hmu0H : ∀ j : Fin D.R.m, mu0H (j.1 + 1) = toHC (cf.mu0 j) := fun j => by
