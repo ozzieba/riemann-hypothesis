@@ -34,10 +34,8 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   C := P.C
   NuC := P.NuC
   I := P.I
-  JA := P.JA
   JM := P.JM
   div := P.tied.div
-  amb0 := P.tied.amb0
   mjH := P.tied.mjH
   cen0 := P.tied.cen0
 

@@ -41,8 +41,6 @@ structure TwIn (ex : Extra D L hT Gi Gl K Yd cX) : Type 1 where
   C : ReadC R F ex.p0 Y
   sEE : (R.toCx3 F).EE →ₗ⋆[ℂ] (F.fc (R.toCx3 F).zs).Sp.HH
   div : DivDef3 D A3 F.P0 F.ψ0 F.P1 F.ψ1 (zsOf R F) (s0Of R F) (s1Of R F) ex.p0 (colOf R F sEE) C.NuC (idsOf cG Z C)
-  JA : AmbIds D A3.A ex.p0.s ex.amb0 F.P0 F.ψ0 Y.tup
-  amb0 : AmbTie D A3.A ex.p0.s ex.amb0 F.P0 F.ψ0 Y.tup Y.jA0 JA
   JM : MjHIds D A3.A Yd (A3.indefDown (s0Of R F))
   mjH : MjHTie D A3.A Yd (A3.indefDown (s0Of R F)) Z.jW JM
 
@@ -70,9 +68,8 @@ variable {ex : Extra D L hT Gi Gl K Yd cX}
   C := colOf x.R x.F x.sEE
   NuC := x.C.NuC
   I := idsOf x.cG x.Z x.C
-  JA := x.JA
   JM := x.JM
-  tied := ⟨x.div, x.amb0, x.mjH, x.Y.cen0 x.cG x.pins.keep⟩
+  tied := ⟨x.div, x.mjH, x.Y.cen0 x.cG x.pins.keep⟩
 
 def TwIn.wd (x : TwIn ex) : (x.F.Dc (zsOf x.R x.F)).Mem → D.what₂.Word := (Equiv.ofBijective _ x.C.bij).symm
 

@@ -1679,7 +1679,7 @@ theorem stepW_core : ∀ 𝒮 : Slots, AmbEx 𝒮 → DivEx 𝒮 → ThEx 𝒮 �
   have hAll := hp.trans (((hA.and hD).and hT).and _root_.GlobalTheory.Mem.Top.Bl.gyLay_kerT_entC)
   refine (StepW.and (StepW.of_all fun _ _ _ _ _ _ _ h => h) hAll).trans (StepW.of_all ?_)
   rintro K B f T w hO hF ⟨⟨⟨pin⟩, Z, ⟨l⟩⟩, ⟨⟨hAm, hDv⟩, hTh⟩, hGy⟩
-  obtain ⟨a, a0, ha⟩ := hAm Z l
+  obtain ⟨⟨a⟩, ⟨a0⟩⟩ := hAm Z l
   obtain ⟨Y, ⟨dv⟩, hMj, hk, hox⟩ := hDv Z l
   obtain ⟨th, ⟨tt⟩⟩ := hTh Z l
   obtain ⟨Gy, ker, hgy, kt, Pl, Bs, hh, he⟩ := hGy Z l.col l.Wt l.nch l.n Y l.what₂.mu dv.Qp
@@ -1729,7 +1729,7 @@ theorem stepW_core : ∀ 𝒮 : Slots, AmbEx 𝒮 → DivEx 𝒮 → ThEx 𝒮 �
       ker := kt
       div := dv
       th := tt
-      obj := ⟨ha, hMj, hk⟩
+      obj := ⟨hMj, hk⟩
       ox := ox }
   exact ⟨Z, c, bt, Pl, Bs, hh, he⟩
 

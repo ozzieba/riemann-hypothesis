@@ -20,17 +20,15 @@ section Joint
 variable (D : D7) {Gp : Type} [Group Gp] [Fintype Gp] {Pl0 I0 Ty T : Type}
   (A3 : FamIn3 D.what₂.LL Gp Pl0 I0 Ty T D.R.m)
 
-structure BaseDivisionAmbientCompatibilityFamily (Y : DivX D) (p0 : BaseLevelRowSide D) (a0 : AmbForm D p0.s)
+structure BaseDivisionAmbientCompatibilityFamily (Y : DivX D) (p0 : BaseLevelRowSide D)
     (P0 : Subgroup Gp) (ψ0 : P0 →* D.what₂.LLˣ) (Ps : Subgroup Gp) (ψs : Ps →* D.what₂.LLˣ)
     (Zs : DefSub A3.fam3.amb3) (S0 : IndefData (A3.side3 P0 ψ0 Zs)) (S1 : IndefData (A3.side3 Ps ψs Zs))
     {Dc : DefCols (A3.side3 Ps ψs Zs)} {Sp : SPer Dc} (C : ColData Dc Sp S1)
     (NuC : ∀ u, Submodule (𝓞 D.what₂.LL) (Fin (Dc.a u) → D.what₂.LL))
     (I : DivisionCompatibilityDataThreeSided D A3 P0 ψ0 Ps ψs Zs S0 S1 p0 Dc)
-    (JA : AmbIds D A3.A p0.s a0 P0 ψ0 I.tup) (JM : MjHIds D A3.A Y (A3.indefDown S0)) : Prop where
+    (JM : MjHIds D A3.A Y (A3.indefDown S0)) : Prop where
 
   div : DivDef3 D A3 P0 ψ0 Ps ψs Zs S0 S1 p0 C NuC I
-
-  amb0 : AmbTie D A3.A p0.s a0 P0 ψ0 I.tup I.jA0 JA
 
   mjH : MjHTie D A3.A Y (A3.indefDown S0) I.jW JM
 
@@ -64,9 +62,8 @@ structure RowSideFamily (ex : Extra D L hT Gi Gl Kc Y cX) : Type 1 where
   C : ColData Dc Sp S1
   NuC : ∀ u, Submodule (𝓞 D.what₂.LL) (Fin (Dc.a u) → D.what₂.LL)
   I : DivisionCompatibilityDataThreeSided D A3 P0 ψ0 Ps ψs Zs S0 S1 ex.p0 Dc
-  JA : AmbIds D A3.A ex.p0.s ex.amb0 P0 ψ0 I.tup
   JM : MjHIds D A3.A Y (A3.indefDown S0)
-  tied : BaseDivisionAmbientCompatibilityFamily D A3 Y ex.p0 ex.amb0 P0 ψ0 Ps ψs Zs S0 S1 C NuC I JA JM
+  tied : BaseDivisionAmbientCompatibilityFamily D A3 Y ex.p0 P0 ψ0 Ps ψs Zs S0 S1 C NuC I JM
 
 attribute [instance] RowSideFamily.grp RowSideFamily.fin
 
@@ -81,9 +78,6 @@ structure RowSideDetermined (T : TiedDataSK ex) (P : RowSideFamily ex) : Prop wh
   lowerMapTw : ∀ u μ (hμ : μ ≠ D.what₂.mu0) (_hw : ∃ w, μ = D.what₂.muAt w) (h1 : 1 ≤ D.R.m), LowerMapTieTw T u μ hμ h1
 
   buDef : Formalism.BasicNotions.Rows.BuDefQ D.what₂
-
-  ambS : ∃ JA : AmbIds D P.A3.A (Formalism.BasicNotions.RowSide.sharp D) ex.amb P.Ps P.ψs P.I.tup,
-    AmbTie D P.A3.A (Formalism.BasicNotions.RowSide.sharp D) ex.amb P.Ps P.ψs P.I.tup P.I.jA JA
 
   faces : ∃ (Dcf : ∀ Zs : DefSub P.A3.fam3.amb3, DefCols (P.A3.side3 P.Ps P.ψs Zs)) (Spf : ∀ Zs, SPer (Dcf Zs)),
     Dcf P.Zs = P.Dc ∧ HEq (Spf P.Zs) P.Sp

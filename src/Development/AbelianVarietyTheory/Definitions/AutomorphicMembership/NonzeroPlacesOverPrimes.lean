@@ -37,9 +37,6 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn
 def MjAre (Z : R3.ReadL R F X0 Y) (Xd : DivX D) : Prop :=
   ∃ J : MjHIds D A3.A Xd (A3.indefDown (R3.s0Of R F)), MjHTie D A3.A Xd (A3.indefDown (R3.s0Of R F)) Z.jW J
 
-def AmbAre (_Z : R3.ReadL R F X0 Y) (a : AmbForm D (RowSide.sharp D)) (a0 : AmbForm D X0.s) : Prop :=
-  (∃ J, AmbTie D A3.A (RowSide.sharp D) a F.P1 F.ψ1 Y.tup Y.jA J) ∧ ∃ J, AmbTie D A3.A X0.s a0 F.P0 F.ψ0 Y.tup Y.jA0 J
-
 end Reading
 
 variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B}
@@ -62,7 +59,6 @@ structure RowsT (K : Ctx) (w : ColW B f T) (Z : w.Lt) (Wt : Set B.places.Pl) (p0
   idx : ∀ Y : DivX (w.st Z).toD7, MjAre r.Z Y → IdxDefs (w.D Z) Y
 
 structure ObjT {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl} (O : Obj2 (w.D Z)) (t : RowsT K w Z Wt O.p0) : Prop where
-  amb : AmbAre t.r.Z O.amb O.amb0
   mjH : MjAre t.r.Z O.X
   kapR : ∀ σ, O.X.kapR σ = kapSharp (w.D Z)
 
@@ -157,7 +153,8 @@ def Has4 (𝒮 : Slots) : WP := HasZ fun K _ _ _ w Z => Nonempty (Lv4 𝒮 K w Z
 
 def pinAnd (p : WP) : WP := fun K B f T w => Pinned K B f T w ∧ p K B f T w
 
-def AmbEx (𝒮 : Slots) : Prop := StepW Pinned fun K _ _ _ w => ∀ (Z : w.Lt) (l : Lv4 𝒮 K w Z), ∃ a a0, AmbAre l.what₂.r.Z a a0
+def AmbEx (𝒮 : Slots) : Prop := StepW Pinned fun K _ _ _ w => ∀ (Z : w.Lt) (l : Lv4 𝒮 K w Z),
+  Nonempty (AmbForm (w.D Z) (RowSide.sharp (w.D Z))) ∧ Nonempty (AmbForm (w.D Z) l.p0.s)
 
 def DivEx (𝒮 : Slots) : Prop := StepW Pinned fun K B f T w => ∀ (Z : w.Lt) (l : Lv4 𝒮 K w Z), ∃ Y : DivX (w.D Z),
   Nonempty (DivT l.n Y) ∧ MjAre l.what₂.r.Z Y ∧ (∀ σ, Y.kapR σ = kapSharp (w.D Z)) ∧

@@ -36,21 +36,6 @@ theorem frm_of_posDef {n : ℕ} (H : Matrix (Fin n) (Fin n) K) (v : InfinitePlac
 
 end Frames
 
-section Coord
-
-variable {K : Type} [Field K]
-
-def rdx {a b : ℕ} (h : a = b) : (Fin b → K) ≃ₗ[K] (Fin a → K) := LinearEquiv.funCongrLeft K K (finCongr h)
-
-theorem rdx_apply {a b : ℕ} (h : a = b) (x : Fin b → K) (i : Fin a) : rdx h x i = x (Fin.cast h i) := rfl
-
-theorem rdx_refl {a : ℕ} (h : a = a) (x : Fin a → K) : rdx h x = x := by
-  funext i
-  rw [rdx_apply]
-  rfl
-
-end Coord
-
 end GlobalTheory.AmbCrd
 
 end

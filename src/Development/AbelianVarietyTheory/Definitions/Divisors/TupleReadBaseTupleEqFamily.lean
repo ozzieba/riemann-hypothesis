@@ -102,13 +102,9 @@ structure IndefiniteRowSideFullHecke (ex : Extra D L hT Gi Gl Kc Y cX) : Type 1 
 
   I : DivisionCompatibilityDataThreeSided D A3 P0 ψ0 Ps ψs Zs S0 S1 ex.p0 Dc
 
-  JA : AmbIds D A3.A ex.p0.s ex.amb0 P0 ψ0 I.tup
-
   JM : MjHIds D A3.A Y (A3.indefDown S0)
 
   div : DivDef3 D A3 P0 ψ0 Ps ψs Zs S0 S1 ex.p0 C NuC I
-
-  amb0 : AmbTie D A3.A ex.p0.s ex.amb0 P0 ψ0 I.tup I.jA0 JA
 
   mjH : MjHTie D A3.A Y (A3.indefDown S0) I.jW JM
 
@@ -120,8 +116,8 @@ variable {ex : Extra D L hT Gi Gl Kc Y cX}
 
 abbrev IndefiniteRowSideFullHecke.toRowSideFamily (P : IndefiniteRowSideFullHecke ex) : RowSideFamily ex :=
   { Gp := P.Gp, Pl0 := P.Pl0, I0 := P.I0, T := P.T, A3 := P.A3, P0 := P.P0, ψ0 := P.ψ0, Ps := P.Ps, ψs := P.ψs, Zs := P.Zs,
-    S0 := P.S0, S1 := P.S1, Dc := P.Dc, Sp := P.Sp, C := P.C, NuC := P.NuC, I := P.I, JA := P.JA, JM := P.JM,
-    tied := ⟨P.div, P.amb0, P.mjH, P.cen0⟩ }
+    S0 := P.S0, S1 := P.S1, Dc := P.Dc, Sp := P.Sp, C := P.C, NuC := P.NuC, I := P.I, JM := P.JM,
+    tied := ⟨P.div, P.mjH, P.cen0⟩ }
 
 def IndefiniteRowSideFullHecke.zsc (P : IndefiniteRowSideFullHecke ex) (Del h0 : ℕ) (Csz : ℝ) : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3 :=
   fun Zs =>
