@@ -91,7 +91,7 @@ theorem val_mem_of_ae {L : Type} [Field L] [NumberField L] (χ : HChar L) (Λ : 
   refine Λ.inv_mem (finprod_induction (· ∈ Λ) Λ.one_mem (fun _ _ => Λ.mul_mem) fun v => ?_)
   exact finprod_induction (· ∈ Λ) Λ.one_mem (fun _ _ => Λ.mul_mem) fun hvS => Λ.zpow_mem (hv v hvS) _
 
-def toHC {E : Type} [Field E] [NumberField E] (χ : HChar E) : NC.HC E := ⟨χ.1, χ.2.1, χ.2.2⟩
+def toHC {E : Type} [Field E] [NumberField E] (χ : HChar E) : NC.HC E := ⟨χ.1⟩
 
 theorem of_at {E : Type} [Field E] [NumberField E] (χ : HChar E) (h : NC.HC E) (e : ∀ x, h.χ x = χ.1 x)
     {v : HeightOneSpectrum (𝓞 E)} {α : ℂ} (ha : h.At v α) : χ.UnrAt v ∧ ((χ.val v : ℂˣ) : ℂ) = α := by

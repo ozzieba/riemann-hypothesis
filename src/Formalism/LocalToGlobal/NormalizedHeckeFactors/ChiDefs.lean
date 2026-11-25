@@ -22,17 +22,15 @@ variable {E : Type} [Field E] [NumberField E]
 @[ext]
 structure HC (E : Type) [Field E] [NumberField E] where
   χ : (AdeleRing (𝓞 E) E)ˣ →* ℂˣ
-  cont : Continuous χ
-  triv : ∀ a : Eˣ, χ (Units.map (algebraMap E (AdeleRing (𝓞 E) E)).toMonoidHom a) = 1
 
 instance : Mul (HC E) where
-  mul χ ψ := ⟨χ.χ * ψ.χ, χ.cont.mul ψ.cont, fun a => by rw [MonoidHom.mul_apply, χ.triv a, ψ.triv a, one_mul]⟩
+  mul χ ψ := ⟨χ.χ * ψ.χ⟩
 
 instance : Inv (HC E) where
-  inv χ := ⟨χ.χ⁻¹, χ.cont.inv, fun a => by rw [MonoidHom.inv_apply, χ.triv a, inv_one]⟩
+  inv χ := ⟨χ.χ⁻¹⟩
 
 instance : One (HC E) where
-  one := ⟨1, continuous_const, fun _ => rfl⟩
+  one := ⟨1⟩
 
 
 open scoped Classical in
